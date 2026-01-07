@@ -7,7 +7,7 @@ const closeChat = document.getElementById("closeChat");
 const hamburgerBtn = document.getElementById("hamburgerBtn");
 const menu = document.getElementById("menu");
 
-// WAJIB ADA — supaya greeting muncul
+// WAJIB ADA — supaya greeting muncul HANYA setelah klik tombol
 let firstOpen = true;
 
 function addMessage(sender, text) {
@@ -30,7 +30,6 @@ async function sendMessage() {
     addMessage("user", message);
     input.value = "";
 
-    // indikator bot mengetik
     const loading = document.createElement("div");
     loading.className = "bot-row";
     loading.innerHTML = `<div class="bubble-bot">Bot sedang mengetik...</div>`;
@@ -45,7 +44,6 @@ async function sendMessage() {
 
         const data = await res.json();
         chatContent.removeChild(loading);
-
         addMessage("bot", data.response);
 
     } catch (err) {
@@ -64,37 +62,24 @@ input.addEventListener("keydown", (e) => {
 });
 
 chatBtn.addEventListener("click", () => {
-    chatBox.style.display = "flex";
-
-    // tampilkan greeting hanya sekali
-    if (firstOpen) {
-        setTimeout(() => {
-            addMessage("bot", "👋 Halo! Ada yang bisa saya bantu hari ini?");
-        }, 150);
-        firstOpen = false;
+    // Toggle tampilan chatbox
+    if (chatBox.style.display === "flex") {
+        chatBox.style.display = "none"; // sembunyikan kalau sudah terbuka
+    } else {
+        chatBox.style.display = "flex"; // tampilkan
+        if (firstOpen) {
+            setTimeout(() => {
+                addMessage("bot", "👋 Halo! Ada yang bisa saya bantu hari ini?");
+            }, 150);
+            firstOpen = false;
+        }
     }
 });
 
 closeChat.addEventListener("click", () => {
-    chatBox.style.display = "none";
-});
+    chatBox.style.display = "none"; // sembunyikan saat klik X
+})
 
 hamburgerBtn.addEventListener("click", () => {
     menu.classList.toggle("show");
 });
-
-fetch("/faq")
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById("faqContainer");
-    container.innerHTML = "";
-
-    data.forEach(item => {
-      container.innerHTML += `
-        <details>
-          <summary>${item.question}</summary>
-          <p>${item.answer}</p>
-        </details>
-      `;
-    });
-  });

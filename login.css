@@ -1,0 +1,151 @@
+/* ===== BODY ===== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+header {
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 18px;
+}
+
+.logo {
+    font-weight: bold;
+    color: #2f3e66;
+}
+
+.hamburger {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.nav-menu {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: white;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+    width: 180px;
+}
+
+.nav-menu a {
+    padding: 12px;
+    text-decoration: none;
+    color: #2f3e66;
+    border-bottom: 1px solid #ddd;
+}
+
+.nav-menu a:hover {
+    background: #d7e5ff;
+}
+
+.show {
+    display: flex;
+}
+
+/* ===== LOGIN CONTAINER ===== */
+.login-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ===== LOGIN BOX ===== */
+.login-box {
+    background: white;
+    width: 400px;          /* Lebar kotak login */
+    max-width: 95%;        /* Responsive mobile */
+    padding: 50px 50px;    /* Simetris kiri-kanan */
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+    margin: 0 auto;        /* Center horizontal */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;  /* semua input full width */
+}
+
+/* JUDUL */
+.login-box h2 {
+    margin-bottom: 30px;
+    color: #2f3e66;
+    font-size: 28px;
+}
+
+/* LABEL */
+.login-box label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    text-align: left; /* label di kiri */
+}
+
+/* INPUT */
+.login-box input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+    transition: all 0.3s;
+    box-sizing: border-box; /* pastikan padding tidak melebihi width */
+}
+
+.login-box input:focus {
+    border-color: #4c8ff7;
+    box-shadow: 0 0 5px rgba(76, 143, 247, 0.5);
+}
+
+/* BUTTON LOGIN */
+.login-box button {
+    width: 100%;
+    padding: 14px 0;
+    background: #4c8ff7;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.login-box button:hover {
+    background: #3a78db;
+    transform: scale(1.02);
+}
+
+/* ERROR MESSAGE */
+.error {
+    color: #ff4c4c;
+    font-size: 14px;
+    margin-bottom: 15px;
+    display: none;
+    text-align: center;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 500px) {
+    .login-box {
+        width: 90%;
+        padding: 40px 20px;
+    }
+}

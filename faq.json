@@ -1,18 +1,32 @@
 [
   {
     "answer": "merupakan salah satu kelurahan yang ada di jakarta timur",
+    "category_id": 1,
     "question": "kelurahan cipinang melayu"
   },
   {
-    "answer": "bapak Arroyantoro",
+    "answer": "pak Arroyantoro",
+    "category_id": 1,
     "question": "siapa lurah kelurahan cipinang melayu"
   },
   {
-    "answer": "letak kantor kelurahan cipinang melayu berada pada Jl. Borobudur, RT.1/RW.10, Cipinang Melayu, Kec. Makasar, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13620",
+    "answer": "letak kantor kelurahan cipinang melayu berada pada \nJl. Borobudur, RT.1/RW.10, Cipinang Melayu, Kec. Makasar, \nKota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13620",
+    "category_id": 2,
     "question": "dimana letak kantor kelurahan cipinang melayu"
   },
   {
     "answer": "mamang si mamang",
+    "category_id": 2,
     "question": "apa itu mamang"
+  },
+  {
+    "answer": "What is Lorem Ipsum?\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    "category_id": 6,
+    "question": "Lorem Ipsum"
+  },
+  {
+    "question": "mamang ku",
+    "answer": "mamang ku",
+    "category_id": 6
   }
 ]

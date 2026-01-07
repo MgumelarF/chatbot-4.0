@@ -1,0 +1,66 @@
+/* Sidebar */
+.faq-sidebar {
+    width: 260px;
+    background: #2f3e66;
+    color: white;
+    padding: 15px;
+}
+
+.faq-sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.faq-sidebar ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.faq-sidebar ul li {
+    background: #3b4a78;
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.faq-sidebar ul li:hover {
+    background: #4c5f9e;
+}
+
+/* Sublist pertanyaan */
+.faq-sidebar ul li ul {
+    display: none;
+    margin-top: 5px;
+}
+
+.faq-sidebar ul li ul li {
+    background: #4c5f9e;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+}
+
+.faq-sidebar ul li ul li:hover {
+    background: #6078c1;
+}
+
+/* Main content */
+.faq-main {
+    flex: 1;
+    padding: 20px;
+    background: #eef3ff;
+}
+
+.faq-main h2 {
+    margin-top: 0;
+}
+
+.faq-card {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}

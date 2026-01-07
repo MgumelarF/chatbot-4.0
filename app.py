@@ -32,7 +32,25 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 FAQ_FILE = os.path.join(BASE_DIR, "faq.json")
 INTENTS_FILE = os.path.join(BASE_DIR, "intents.json")
+CATEGORIES_FILE = os.path.join(BASE_DIR, "categories.json")
 NEW_PY_FILE = os.path.join(BASE_DIR, "new.py")
+
+# =========================
+# HELPER LOAD FILE JSON AMAN
+# =========================
+def safe_load_json(path, default):
+    if not os.path.exists(path):
+        return default
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return data
+    except (json.JSONDecodeError, FileNotFoundError):
+        return default
+
+def save_json(path, data):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
 # =========================
 # ROUTE HALAMAN
@@ -41,11 +59,9 @@ NEW_PY_FILE = os.path.join(BASE_DIR, "new.py")
 def index():
     return send_from_directory(BASE_DIR, "index.html")
 
-
 @app.route("/login", methods=["GET"])
 def login_page():
     return send_from_directory(BASE_DIR, "login.html")
-
 
 @app.route("/dashboard")
 def dashboard():
@@ -53,12 +69,10 @@ def dashboard():
         return redirect("/login")
     return send_from_directory(BASE_DIR, "dashboard.html")
 
-
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
-
 
 # =========================
 # LOGIN API
@@ -66,123 +80,140 @@ def logout():
 @app.route("/login", methods=["POST"])
 def login_api():
     data = request.get_json(force=True)
-
-    if (
-        data.get("username") == "admin"
-        and data.get("password") == "admin123"
-    ):
+    if data.get("username") == "admin" and data.get("password") == "admin123":
         session["admin"] = True
         return jsonify({"success": True})
-
     return jsonify({"success": False})
 
-
 # =========================
-# FAQ API (BUKAN CHATBOT)
+# FAQ API
 # =========================
 @app.route("/faq")
 def get_faq():
-    if not os.path.exists(FAQ_FILE):
-        return jsonify([])
-
-    with open(FAQ_FILE, "r", encoding="utf-8") as f:
-        return jsonify(json.load(f))
-
+    faqs = safe_load_json(FAQ_FILE, [])
+    return jsonify(faqs)
 
 @app.route("/faq/update", methods=["POST"])
 def update_faq():
     if not session.get("admin"):
         return jsonify({"error": "Unauthorized"}), 403
-
     data = request.get_json(force=True)
-
-    with open(FAQ_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-
+    save_json(FAQ_FILE, data)
     return jsonify({"success": True})
 
+# =========================
+# CATEGORIES API
+# =========================
+@app.route("/categories", methods=["GET"])
+def get_categories():
+    categories = safe_load_json(CATEGORIES_FILE, [])
+    return jsonify(categories)
+
+@app.route("/categories", methods=["POST"])
+def add_category():
+    if not session.get("admin"):
+        return jsonify({"error": "Unauthorized"}), 403
+    data = request.get_json(force=True)
+    name = data.get("name")
+    if not name:
+        return jsonify({"error": "Nama kategori kosong"}), 400
+
+    categories = safe_load_json(CATEGORIES_FILE, [])
+    # generate id
+    new_id = max([c.get("id", 0) for c in categories], default=0) + 1
+    categories.append({"id": new_id, "name": name})
+    save_json(CATEGORIES_FILE, categories)
+    return jsonify({"success": True, "id": new_id})
+
+@app.route("/categories/<int:cat_id>", methods=["PUT"])
+def edit_category(cat_id):
+    if not session.get("admin"):
+        return jsonify({"error": "Unauthorized"}), 403
+    data = request.get_json(force=True)
+    name = data.get("name")
+    if not name:
+        return jsonify({"error": "Nama kategori kosong"}), 400
+
+    categories = safe_load_json(CATEGORIES_FILE, [])
+    for cat in categories:
+        if cat["id"] == cat_id:
+            cat["name"] = name
+            save_json(CATEGORIES_FILE, categories)
+            return jsonify({"success": True})
+    return jsonify({"error": "Kategori tidak ditemukan"}), 404
+
+@app.route("/categories/<int:cat_id>", methods=["DELETE"])
+def delete_category(cat_id):
+    if not session.get("admin"):
+        return jsonify({"error": "Unauthorized"}), 403
+    categories = safe_load_json(CATEGORIES_FILE, [])
+    categories = [c for c in categories if c["id"] != cat_id]
+    save_json(CATEGORIES_FILE, categories)
+    return jsonify({"success": True})
 
 # =========================
-# INTENTS CHATBOT (ADMIN)
+# INTENTS CHATBOT
 # =========================
 @app.route("/intents")
 def get_intents():
     if not session.get("admin"):
         return jsonify({"error": "Unauthorized"}), 403
-
-    with open(INTENTS_FILE, "r", encoding="utf-8") as f:
-        return jsonify({"content": f.read()})
-
+    content = ""
+    if os.path.exists(INTENTS_FILE):
+        with open(INTENTS_FILE, "r", encoding="utf-8") as f:
+            content = f.read()
+    return jsonify({"content": content})
 
 @app.route("/intents/update", methods=["POST"])
 def update_intents():
     if not session.get("admin"):
         return jsonify({"error": "Unauthorized"}), 403
-
     data = request.get_json(force=True)
     content = data.get("content")
-
-    with open(INTENTS_FILE, "w", encoding="utf-8") as f:
-        f.write(content)
-
-    # TRAIN ULANG MODEL
-    subprocess.run(
-        ["python", NEW_PY_FILE],
-        cwd=BASE_DIR
-    )
-
+    if content is not None:
+        with open(INTENTS_FILE, "w", encoding="utf-8") as f:
+            f.write(content)
+        # TRAIN ULANG MODEL
+        subprocess.run(["python", NEW_PY_FILE], cwd=BASE_DIR)
     return jsonify({"success": True})
 
-
 # =========================
-# CHATBOT API (INI YANG PENTING)
+# CHATBOT API
 # =========================
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json(force=True)
-
     if not data or "message" not in data:
-        return jsonify({
-            "error": "Message kosong"
-        }), 400
+        return jsonify({"error": "Message kosong"}), 400
 
     user_text = data["message"]
-
     try:
-        intent_tag, score = predict_intent_semantic(
-            user_text,
-            return_score=True
-        )
-
+        intent_tag, score = predict_intent_semantic(user_text, return_score=True)
         response = get_response(intent_tag)
-
         return jsonify({
             "intent": intent_tag,
             "confidence": round(float(score), 3),
             "response": response
         })
-
     except Exception as e:
         return jsonify({
             "error": "Chatbot error",
             "detail": str(e)
         }), 500
 
-
 # =========================
-# STATIC FILE (CSS / JS)
+# STATIC FILES
 # =========================
 @app.route("/<path:filename>")
 def serve_files(filename):
     return send_from_directory(BASE_DIR, filename)
 
-
 # =========================
 # RUN SERVER
 # =========================
 if __name__ == "__main__":
-    app.run(
-        host="127.0.0.1",
-        port=5000,
-        debug=True
-    )
+    # pastikan categories.json dan faq.json ada
+    for file_path in [CATEGORIES_FILE, FAQ_FILE]:
+        if not os.path.exists(file_path):
+            save_json(file_path, [])
+    app.run(host="127.0.0.1", port=5000, debug=True)

@@ -1,17 +1,23 @@
+/* ===== BODY ===== */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
+    padding: 0;
     background-color: #bcd3ff;
 }
 
-/* HEADER */
+/* ===== HEADER ===== */
 header {
     background-color: #e6e6e6;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
+    padding: 12px 20px;
     font-size: 18px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .logo {
@@ -22,6 +28,7 @@ header {
 .hamburger {
     font-size: 24px;
     cursor: pointer;
+    margin-right: 10px;
 }
 
 /* NAV MENU */
@@ -35,10 +42,11 @@ header {
     display: none;
     flex-direction: column;
     width: 180px;
+    z-index: 1001;
 }
 
 .nav-menu a {
-    padding: 12px;
+    padding: 12px 16px;
     text-decoration: none;
     color: black;
     border-bottom: 1px solid #ddd;
@@ -52,37 +60,94 @@ header {
     display: flex;
 }
 
-/* FAQ */
-h2 {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 36px;
-}
-
-.faq-container {
-    width: 80%;
-    margin: auto;
-    margin-top: 20px;
-}
-
-details {
-    background: white;
-    margin: 10px 0;
-    padding: 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
-}
-
-summary {
-    font-weight: bold;
-    font-size: 16px;
+/* ===== CONTAINER NYATU ===== */
+.container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    height: calc(100vh - 60px); /* tinggi total dikurangi header */
+    margin: 0;
+    padding: 0;
 }
 
-/* CHAT BUTTON */
+/* ===== SIDEBAR FAQ ===== */
+.faq-sidebar {
+    width: 260px;
+    background: #2f3e66;
+    color: white;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.faq-sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* LIST KATEGORI & PERTANYAAN */
+.faq-sidebar ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.faq-sidebar ul li {
+    background: #3b4a78;
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.faq-sidebar ul li:hover {
+    background: #4c5f9e;
+}
+
+/* Sublist pertanyaan */
+.faq-sidebar ul li ul {
+    display: none;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+.faq-sidebar ul li ul li {
+    background: #4c5f9e;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+}
+
+.faq-sidebar ul li ul li:hover {
+    background: #6078c1;
+}
+
+/* ===== MAIN CONTENT ===== */
+.faq-main {
+    flex: 1;
+    padding: 20px;
+    background: #eef3ff;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.faq-main h2 {
+    margin-top: 0;
+}
+
+.faq-card {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.faq-card:hover {
+    background: #d7e5ff;
+}
+
+/* ===== CHAT ===== */
 .chat-btn {
     position: fixed;
     right: 20px;
@@ -97,10 +162,11 @@ summary {
     cursor: pointer;
     color: white;
     font-size: 25px;
+    z-index: 1002;
 }
 
-/* POPUP CHAT */
 .chat-popup {
+    display: none; 
     position: fixed;
     right: 20px;
     bottom: 90px;
@@ -108,10 +174,10 @@ summary {
     height: 350px;
     background: white;
     border-radius: 12px;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
-    display: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     flex-direction: column;
     overflow: hidden;
+    z-index: 1002;
 }
 
 .chat-header {
@@ -124,8 +190,9 @@ summary {
     user-select: none;
     cursor: default;
 }
+
 .close-btn {
-    cursor: pointer; /* hanya X yang jadi pointer */
+    cursor: pointer;
     padding: 3px;
 }
 
@@ -156,6 +223,7 @@ summary {
     cursor: pointer;
 }
 
+/* ===== CHAT BUBBLE ===== */
 .bubble-user {
     max-width: 75%;
     padding: 8px 10px;
@@ -178,7 +246,7 @@ summary {
 
 .user-row {
     display: flex;
-    justify-content: flex-end; /* ini yang bikin mentok kanan */
+    justify-content: flex-end;
     margin: 6px 0;
 }
 
@@ -187,69 +255,4 @@ summary {
     align-items: flex-start;
     gap: 6px;
     margin: 6px 0;
-}
-
-.bot-avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 60px);
-}
-
-.login-box {
-    background: white;
-    padding: 30px;
-    width: 320px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-}
-
-.login-box h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.login-box label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
-}
-
-.login-box input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    outline: none;
-}
-
-.login-box button {
-    width: 100%;
-    padding: 10px;
-    background: #4c8ff7;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.login-box button:hover {
-    background: #3a78db;
-}
-
-.error {
-    color: red;
-    font-size: 14px;
-    text-align: center;
-    margin-bottom: 10px;
-    display: none;
 }

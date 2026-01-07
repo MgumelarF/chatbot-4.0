@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Admin</title>
-
-    <!-- tidak WAJIB: nama file harus SAMA PERSIS -->
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
@@ -12,27 +10,32 @@
 <!-- HEADER -->
 <header class="header">
     <div class="logo">Dashboard Admin</div>
-    <button class="logout-btn" onclick="logout()">Logout</button>
+    <button id="logoutBtn" class="logout-btn">Logout</button>
 </header>
 
 <div class="wrapper">
 
     <!-- SIDEBAR -->
     <aside id="sidebar" class="sidebar">
-        <div class="sidebar-toggle" onclick="toggleSidebar()">❮</div>
+        <div class="sidebar-toggle">❮</div>
 
         <ul class="sidebar-menu">
-            <li class="active" onclick="showSection('home', this)">
+            <li class="active" data-section="home">
                 <span class="icon">🏠</span>
                 <span class="text">Home</span>
             </li>
 
-            <li onclick="showSection('faq', this)">
+            <li data-section="editCategorySection">
+                <span class="icon">🗂️</span>
+                <span class="text">Edit Kategori</span>
+            </li>
+
+            <li data-section="faq">
                 <span class="icon">❓</span>
                 <span class="text">Edit FAQ</span>
             </li>
 
-            <li onclick="showSection('intents', this)">
+            <li data-section="intents">
                 <span class="icon">🤖</span>
                 <span class="text">Edit intents.json</span>
             </li>
@@ -44,33 +47,64 @@
 
         <!-- HOME -->
         <section id="home" class="section active">
-            <h1 style="text-align:center;">
-                Selamat datang di halaman admin
-            </h1>
+            <h1 style="text-align:center;">Selamat datang di halaman admin</h1>
+        </section>
+
+        <!-- KATEGORI -->
+        <section id="editCategorySection" class="section">
+            <h2>Kelola Kategori FAQ</h2>
+
+            <!-- Tambah Kategori -->
+            <input type="text" id="newCategoryName" placeholder="Nama kategori">
+            <button id="addCategoryBtn">Tambah Kategori</button>
+
+            <!-- Form edit kategori (disembunyikan awalnya) -->
+            <div id="editCategoryForm" style="display:none; margin-top:10px;">
+                <input type="text" id="editCategoryName" placeholder="Nama kategori baru">
+                <button id="saveEditCategoryBtn">Simpan</button>
+                <button id="cancelEditCategoryBtn">Batal</button>
+            </div>
+
+            <table id="categoryTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </section>
 
         <!-- FAQ -->
         <section id="faq" class="section">
-            <h2>Kelola Pertanyaan Umum</h2>
+            <h2>Kelola Pertanyaan</h2>
 
-            <div id="faqList"></div>
+            <!-- Form Tambah FAQ di atas daftar -->
+            <div id="faqForm" style="margin-bottom:15px;">
+                <input type="text" id="question" placeholder="Pertanyaan">
+                <textarea id="answer" placeholder="Jawaban"></textarea>
+
+                <select id="faqCategory">
+                    <option value="">Pilih Kategori</option>
+                </select>
+
+                <button id="saveFaqBtn">Tambah FAQ</button>
+            </div>
 
             <hr>
 
-            <input type="text" id="question" placeholder="Pertanyaan">
-            <br><br>
-            <textarea id="answer" placeholder="Jawaban"></textarea>
-            <br><br>
-            <button onclick="saveFaq()">Simpan FAQ</button>
+            <!-- Daftar FAQ akan ditampilkan di bawah form -->
+            <div id="faqList"></div>
         </section>
 
         <!-- INTENTS -->
         <section id="intents" class="section">
             <h2>Edit intents.json</h2>
-
-            <textarea id="intentsEditor"></textarea>
-            <br><br>
-            <button onclick="saveIntents()">Simpan & Latih Ulang AI</button>
+            <textarea id="intentsEditor" rows="10"></textarea>
+            <br>
+            <button id="saveIntentsBtn">Simpan & Latih Ulang AI</button>
         </section>
 
     </main>
