@@ -222,8 +222,9 @@ def serve_files(filename):
 # RUN SERVER
 # =========================
 if __name__ == "__main__":
-    # pastikan categories.json dan faq.json ada
     for file_path in [CATEGORIES_FILE, FAQ_FILE]:
         if not os.path.exists(file_path):
             save_json(file_path, [])
-    app.run(host="0.0.0.0", port=5000, debug=True)
+
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
