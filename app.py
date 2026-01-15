@@ -13,7 +13,7 @@ import os
 # =========================
 # IMPORT CHATBOT ENGINE
 # =========================
-from modellain import chat as chatbot_engine, reload_intents
+from modellain import chat as chatbot_engine
 
 # =========================
 # INIT APP
