@@ -20,7 +20,7 @@ CACHE_FILE = "intent_cache.pkl"
 HASH_FILE = "intent_hash.txt"
 
 EMBED_MODEL = "paraphrase-MiniLM-L6-v2"
-SIMILARITY_THRESHOLD = 0.45
+SIMILARITY_THRESHOLD = 0.35
 TOP_K = 2
 
 # intent yang bukan layanan utama
